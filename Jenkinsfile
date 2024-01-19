@@ -15,10 +15,4 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            // Архивация логов после выполнения пайплайна
-            archiveArtifacts artifacts: 'logs/**', fingerprint: true
-        }
-    }
 }
