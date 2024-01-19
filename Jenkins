@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {     
+                build job: 'Build-And-Upload', wait: true
+            }
+        }
+        stage('Deploy') {
+            steps {
+                build job: 'Deploy-With-Ansible', wait: true
+            }
+        }
+    }
+    post {
+    always {
+        archiveArtifacts artifacts: 'logs/**', fingerprint: true
+    }
+}
