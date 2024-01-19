@@ -1,0 +1,26 @@
+- name: Deploy SimpleToDoList application
+  hosts: localhost
+  gather_facts: true
+
+  vars:
+    debug_mode: true
+
+  tasks:
+    - name: Copy SimpleToDoList artifact to Tomcat webapps directory
+      copy:
+        src: /home/jenkinsuser/.jenkins/workspace/Build-And-Upload/target/SimpleToDoList-1.0-SNAPSHOT.jar
+        dest: /var/lib/tomcat9/webapps/SimpleToDoList-1.0-SNAPSHOT.jar
+      register: copy_result
+
+    - name: Output copy result
+      debug:
+        var: copy_result
+      when: debug_mode
+
+    - name: Restart Tomcat
+      become: yes
+      become_method: sudo
+      service:
+        name: tomcat9
+        state: restarted
+      when: copy_result.changed

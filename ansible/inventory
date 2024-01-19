@@ -1,0 +1,2 @@
+[tomcat_servers]
+89.104.70.187 ansible_user=jenkinsuser
